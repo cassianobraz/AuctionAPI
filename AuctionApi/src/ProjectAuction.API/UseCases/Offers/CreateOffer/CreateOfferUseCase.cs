@@ -1,18 +1,21 @@
-﻿using ProjectAuction.API.Entities;
-using ProjectAuction.API.Communication.Requests;
-using ProjectAuction.API.Repositories;
+﻿using ProjectAuction.API.Communication.Requests;
+using ProjectAuction.API.Contracts;
+using ProjectAuction.API.Entities;
 using ProjectAuction.API.Services;
 
 namespace ProjectAuction.API.UseCases.Offers.CreateOffer;
 
 public class CreateOfferUseCase
 {
-    private readonly LoggedUser _loggetUser;
-    public CreateOfferUseCase(LoggedUser loggetUser) => _loggetUser = loggetUser;
+    private readonly ILoggedUser _loggetUser;
+    private readonly IOfferRepository _repository;
+    public CreateOfferUseCase(ILoggedUser loggetUser, IOfferRepository repository)
+    {
+        _loggetUser = loggetUser;
+        _repository = repository;
+    }
     public int Execute(int itemId, ResquestCreateOfferJson request)
     {
-        var repository = new ProjectAuctionDbContext();
-
         var user = _loggetUser.User();
 
         var offer = new Offer
@@ -23,9 +26,7 @@ public class CreateOfferUseCase
             UserId = user.Id,
         };
 
-        repository.Offers.Add(offer);
-
-        repository.SaveChanges();
+        _repository.Add(offer);
 
         return offer.Id;
     }
