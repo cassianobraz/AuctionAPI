@@ -4,9 +4,7 @@ using ProjectAuction.API.UseCases.Auctions.GetCurrent;
 
 namespace ProjectAuction.API.Controllers;
 
-[Route("[controller]")]
-[ApiController]
-public class AuctionController : ControllerBase
+public class AuctionController : ProjectAuctionBaseController
 {
     [HttpGet]
     [ProducesResponseType(typeof(Auction), StatusCodes.Status200OK)]

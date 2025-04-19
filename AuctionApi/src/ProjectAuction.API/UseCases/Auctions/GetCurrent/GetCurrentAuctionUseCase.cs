@@ -10,6 +10,8 @@ public class GetCurrentAuctionUseCase
     {
         var repository = new ProjectAuctionDbContext();
 
+        var today = DateTime.Now;
+
         return repository
             .Auctions
             .Include(auction => auction.Items)
